@@ -1,0 +1,41 @@
+# Getting Started
+
+This guide will walk you through setting up a local instance of LeverFlag using Docker Compose.
+
+## Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or equivalent Docker runtime
+- [Git](https://git-scm.com/)
+
+## Installation
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/dhawalhost/leverflag.git
+    cd leverflag
+    ```
+
+2.  **Start the stack**:
+    We provide a `docker-compose.yml` file that spins up the API server, the Console, and a PostgreSQL database.
+
+    ```bash
+    docker compose up -d
+    ```
+
+    The initial build might take a few minutes as it compiles the Go backend and builds the React frontend.
+
+3.  **Verify the services**:
+    - **Console**: [http://localhost:8081](http://localhost:8081)
+    - **API**: [http://localhost:8080/api/v1/health](http://localhost:8080/api/v1/health)
+
+## First Run
+
+1.  Open the Console at [http://localhost:8081](http://localhost:8081).
+2.  You will be redirected to the login page.
+3.  Register a new admin account or login if you have seeded credentials.
+4.  Once logged in, you'll be taken to the onboarding wizard to create your first organization and workspace.
+
+## Next Steps
+
+- Explore [Core Concepts](/docs/concepts/overview) to understand how LeverFlag works.
+- Learn how to integrate the [SDKs](/docs/sdks).

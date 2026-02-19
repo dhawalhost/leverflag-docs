@@ -1,5 +1,8 @@
 {
-  "index": "Introduction",
-  "getting-started": "Getting Started",
-  "guides": "Guides"
+    "index": "Introduction",
+    "getting-started": "Getting Started",
+    "concepts": "Core Concepts",
+    "guides": "Guides",
+    "sdks": "SDKs",
+    "api-reference": "API Reference"
 }

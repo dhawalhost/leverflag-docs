@@ -1,0 +1,39 @@
+# Python SDK
+
+The official LeverFlag SDK for Python applications.
+
+## Installation
+
+```bash
+pip install leverflag
+```
+
+## Usage
+
+```python
+from leverflag import LeverFlagClient
+
+client = LeverFlagClient(
+    api_key="YOUR_API_KEY",
+    workspace_slug="your-workspace",
+    api_url="https://api.leverflag.com/api/v1"
+)
+
+# Optional: wait for initial fetch
+client.wait_for_ready()
+
+user_context = {"user_id": "user-123"}
+is_enabled = client.bool_variation("new-feature", False, user_context)
+
+if is_enabled:
+    # Show new feature
+    pass
+```
+
+## Configuration
+
+The client accepts similar arguments to the JS SDK:
+
+- `api_key`: (Required) Your environment API key.
+- `workspace_slug`: (Required) Your workspace slug.
+- `api_url`: (Optional) Base URL of the API.

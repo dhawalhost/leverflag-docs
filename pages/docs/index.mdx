@@ -1,5 +1,29 @@
 # Introduction
 
-Welcome to the documentation!
+LeverFlag is a Go-powered feature flag service that provides REST APIs for managing feature flags, distributing configuration to clients, handling analytics, and securing access with JWTs and API keys.
 
-This is the starting point for your documentation.
+The platform is designed to decouple feature release from code deployment, allowing teams to ship faster and with more confidence.
+
+## Key Features
+
+- **Feature Flag CRUD**: Manage flags with tags, rollout percentage, targeting rules, and dependency metadata.
+- **Evaluation API**: Secured by API keys for fast, client-side configuration delivery.
+- **Authentication**: Supports password login, self-registration, and Google Sign-In (JWT).
+- **Console Experience**: A modern React-based dashboard for managing your flags and team.
+- **Role-Based Access Control**: Granular permissions (Admin, Editor, Viewer) for secure team collaboration.
+- **Workflows**: Peer-review process for changing flags in protected environments like Production.
+- **Audit Logging**: Track who changed what and when.
+- **Multi-Client Support**: SDKs for JavaScript / TypeScript, Python, and more.
+
+## Architecture
+
+LeverFlag consists of two main components:
+
+1.  **API Server (Backend)**: Written in Go, it handles all logic, database interactions (PostgreSQL), and API requests.
+2.  **Console (Frontend)**: A React application that provides a user-friendly interface for managing the system.
+
+Both components can be deployed easily using Docker and Docker Compose.
+
+## Next Steps
+
+Head over to the [Getting Started](/docs/getting-started) guide to set up your first LeverFlag instance.

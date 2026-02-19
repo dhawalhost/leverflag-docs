@@ -1,0 +1,52 @@
+# API Reference
+
+LeverFlag provides a comprehensive REST API.
+
+Base URL: `/api/v1`
+
+## Authentication
+
+Most endpoints require a JWT token in the `Authorization` header:
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+SDK endpoints use the API Key:
+
+```
+X-API-Key: <your-api-key>
+```
+
+## Endpoints
+
+### Auth
+
+- `POST /auth/login`: Login with username/password.
+- `POST /auth/register`: Register a new user.
+- `POST /auth/google`: Login/Register with Google ID token.
+
+### Feature Flags
+
+- `GET /feature-flags`: List all flags.
+- `POST /feature-flags`: Create a new flag.
+- `GET /feature-flags/:id`: Get a specific flag.
+- `PUT /feature-flags/:id`: Update a flag.
+- `DELETE /feature-flags/:id`: Delete a flag.
+
+### Configuration
+
+- `POST /config`: Fetch configuration for a context (SDK use).
+
+### Users
+
+- `GET /users`: List users.
+- `POST /users`: Invite a user.
+- `DELETE /users/:id`: Remove a user.
+
+### Workflows
+
+- `GET /workspaces/:slug/workflows`: List change requests.
+- `POST /workspaces/:slug/workflows`: Create request.
+- `POST /workspaces/:slug/workflows/:id/review`: Approve/Reject.
+- `POST /workspaces/:slug/workflows/:id/apply`: Apply changes.

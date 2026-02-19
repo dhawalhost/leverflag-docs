@@ -2,27 +2,27 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-    logo: <span>Nextra Documentation Template</span>,
+    logo: <span>LeverFlag Documentation</span>,
     project: {
-        link: 'https://github.com/shuding/nextra-docs-template',
+        link: 'https://github.com/dhawalhost/leverflag',
     },
     chat: {
         link: 'https://discord.com',
     },
-    docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+    docsRepositoryBase: 'https://github.com/dhawalhost/leverflag',
     footer: {
-        text: 'Nextra Docs Template',
+        text: 'LeverFlag Documentation',
     },
     useNextSeoProps() {
         return {
-            titleTemplate: '%s – Nextra',
+            titleTemplate: '%s – LeverFlag',
         }
     },
     head: (
         <>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta property="og:title" content="Nextra Documentation Template" />
-            <meta property="og:description" content="A reusable documentation template built with Nextra." />
+            <meta property="og:title" content="LeverFlag Documentation" />
+            <meta property="og:description" content="Documentation for LeverFlag, a feature flag service built with Go." />
         </>
     ),
     sidebar: {

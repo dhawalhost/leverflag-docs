@@ -1,0 +1,32 @@
+# Core Concepts Overview
+
+LeverFlag is built around a few specific concepts that model how feature flags are managed and delivered.
+
+## Hierarchy
+
+1.  **Organization**: The top-level entity, usually representing your company.
+2.  **Workspace**: A project or product line within an organization (e.g., "Mobile App", "Web Dashboard"). Feature flags live here.
+3.  **Environment**: Deployment targets (e.g., `dev`, `staging`, `production`) where flags can have different configurations.
+
+## The Feature Flag Model
+
+A **Feature Flag** is a named key (e.g., `new-checkout-flow`) that resolves to a value based on the context.
+
+### Variations
+Flags can return different types of data:
+- **Boolean**: `true` / `false`
+- **String**: `"blue"`, `"red"`
+- **Number**: `10`, `50`
+- **JSON**: `{ "enabled": true, "color": "blue" }`
+
+### Rules & Targeting
+You can define rules to target specific segments of users:
+- **Individual Targeting**: Enable for specific user IDs.
+- **Rules**: "If `email` ends with `@company.com`, return `true`".
+- **Rollouts**: "Return `true` for 20% of users".
+
+## API Keys
+
+Clients (like your backend server or frontend app) use **API Keys** to fetch the feature flag configuration.
+- API Keys are scoped to a specific Workspace.
+- They are used to authenticate with the SDKs.

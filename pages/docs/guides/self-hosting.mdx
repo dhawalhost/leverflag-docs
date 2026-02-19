@@ -1,0 +1,46 @@
+# Self-Hosting LeverFlag
+
+You can self-host LeverFlag using Docker.
+
+## Docker Compose (Recommended)
+
+The easiest way to get started is with Docker Compose.
+
+```yaml
+version: '3.8'
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: leverflag
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: leverflag
+    ports:
+      - "5432:5432"
+
+  api:
+    image: leverflag/api:latest
+    environment:
+      DB_HOST: db
+      DB_USER: leverflag
+      DB_PASSWORD: password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  console:
+    image: leverflag/console:latest
+    environment:
+      VITE_API_URL: http://localhost:8080/api/v1
+    ports:
+      - "8081:80"
+```
+
+## Manual Deployment
+
+You can also run the binary directly.
+
+1.  Build the backend: `go build -o leverflag ./cmd/app`
+2.  Run migration: `./leverflag migrate`
+3.  Start server: `./leverflag serve`

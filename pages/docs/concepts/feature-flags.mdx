@@ -1,0 +1,26 @@
+# Feature Flags
+
+Feature flags (or feature toggles) are the core primitives in LeverFlag. They allow you to modify system behavior without changing code.
+
+## Anatomy of a Flag
+
+A feature flag consists of:
+
+- **Key**: A unique identifier (e.g., `enable-dark-mode`).
+- **Type**: The data type of the return value (`boolean`, `string`, `number`, `json`).
+- **Variations**: The set of possible values the flag can return.
+- **Environments**: Configurations for each environment (e.g., specific rules for `production` vs `dev`).
+
+## Evaluation Logic
+
+When an SDK asks "What is the value of `enable-dark-mode` for User X?", LeverFlag evaluates in this order:
+
+1.  **Targeting Rules**: Checks if the user matches any specific rules (e.g., "User ID is 123").
+2.  **Percentage Rollout**: Determines if the user falls into a rollout bucket.
+3.  **Default Variation**: If no rules match, the default variation for that environment is returned.
+
+## Client-Side vs Server-Side
+
+LeverFlag supports both use cases:
+- **Server-Side**: The SDK runs on your server. It can sync all rules and evaluate locally for maximum performance.
+- **Client-Side**: The SDK runs in a browser or mobile app. It fetches the evaluated values for the specific user context to verify security and minimize data transfer.

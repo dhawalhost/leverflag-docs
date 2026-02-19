@@ -1,0 +1,22 @@
+# Workflows
+
+Workflows provide a safety mechanism for managing feature flags in critical environments like `production`.
+
+## How it Works
+
+When you attempt to save changes to a feature flag in a protected environment, instead of applying the change immediately, LeverFlag creates a **Change Request**.
+
+## The Process
+
+1.  **Draft**: You make changes in the console and click "Request Approval".
+2.  **Pending**: The request is created and sits in a "Pending" state.
+3.  **Review**: A teammate views the request, sees the diff (old vs. new configuration), and can **Approve** or **Reject** it.
+4.  **Apply**: Once approved, the request can be "Applied", which pushes the configuration to the live system.
+
+## Protected Environments
+
+By default, the `workflow` enforcement is enabled for:
+- `production`
+- `prod`
+
+This ensures that no single person can accidentally break production without a second pair of eyes.

@@ -1,0 +1,46 @@
+# JavaScript / TypeScript SDK
+
+The official LeverFlag SDK for JavaScript and TypeScript applications.
+
+## Installation
+
+```bash
+npm install @leverflag/sdk-js
+```
+
+## Usage
+
+```typescript
+import { LeverFlagClient } from "@leverflag/sdk-js";
+
+const client = new LeverFlagClient({
+  apiKey: "YOUR_API_KEY",
+  workspaceSlug: "your-workspace",
+  serviceURL: "https://api.leverflag.com/api/v1",
+});
+
+await client.waitForReady();
+
+const isEnabled = client.boolVariation("new-feature", false);
+
+if (isEnabled) {
+  // Show new feature
+}
+```
+
+## Options
+
+| Option | Type | Description |
+|---|---|---|
+| `apiKey` | `string` | **Required**. The API key for your workspace environment. |
+| `workspaceSlug` | `string` | **Required**. The slug of your workspace. |
+| `serviceURL` | `string` | The base URL of your LeverFlag instance. |
+| `refreshIntervalMs` | `number` | How often to poll for changes (default: 30000ms). |
+
+## Methods
+
+- `boolVariation(key, default)`: Returns a boolean.
+- `stringVariation(key, default)`: Returns a string.
+- `numberVariation(key, default)`: Returns a number.
+- `jsonVariation(key, default)`: Returns a JSON object.
+- `track(eventName, properties)`: Sends a custom analytics event.
