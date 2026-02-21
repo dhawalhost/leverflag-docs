@@ -1,5 +1,10 @@
 {
-    "overview": "Overview",
+    "overview": "Platform Overview",
     "feature-flags": "Feature Flags",
-    "workflows": "Workflows"
+    "experiments": "A/B Experiments",
+    "workflows": "Automated Workflows",
+    "data-exports": "Data Exports",
+    "audit-logs": "Audit Logs",
+    "ai-assistant": "AI Assistant",
+    "scheduled-rollouts": "Scheduled Rollouts"
 }

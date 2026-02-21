@@ -1,0 +1,28 @@
+# A/B Testing & Experiments
+
+When rolling out a new feature, you often want to measure its impact on key business metrics (e.g., Conversion Rate, Bounce Rate). LeverFlag's Experimentation engine allows you to run robust A/B tests to make data-driven decisions.
+
+## How it Works
+
+1. **Define a Metric:** Create a metric to track (e.g., `checkout_completed`).
+2. **Setup an Experiment:** Link a Feature Flag to the Metric. Select a **Baseline** variation (often `control` or `false`) to compare against.
+3. **Capture Events:** Use the LeverFlag SDKs to trigger `Track()` events when the user performs the desired action.
+
+### Statistical Significance Engine
+
+LeverFlag analyzes the incoming exposure and conversion events in real-time. We use a **Two-Proportion Z-Test** to compare the conversion rate of each variation against the baseline.
+
+The engine calculates a statistical **P-Value** (Probability Value). If the test gathers enough traffic and $P < 0.05$, the system automatically highlights the variation as a **Statistically Significant Winner**.
+
+* **Users:** The number of unique users exposed to the variation.
+* **Conversions:** Unique users who triggered the assigned metric *after* they were exposed to the variation.
+* **Calculation Minimums:** We require a minimum of 50 users per variation before marking results as statistically significant to avoid premature conclusions.
+
+## Viewing Results
+
+Open the Experiment Details page in the LeverFlag Console. The Results table will show:
+- Conversion Rates
+- Percentage Improvements
+- Confidence Levels (calculated as `(1 - P-Value) * 100`)
+
+When a variation reaches 95% Confidence ($P < 0.05$), a **Winner** badge will appear.

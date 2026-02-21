@@ -1,0 +1,143 @@
+# Go SDK
+
+The LeverFlag Server-Side Go SDK allows you to integrate feature flags into your Go applications.
+
+## Source Code
+The source code for the Go SDK is maintained within the `leverflag` repository under the [`sdk/`](https://github.com/dhawalhost/leverflag/tree/main/sdk) directory.
+
+## Installation
+
+```bash
+go get github.com/dhawalhost/leverflag/sdk
+```
+
+## Initialization
+
+Import the LeverFlag SDK and initialize the client using your API Key and Workspace slug.
+
+```go
+import "github.com/dhawalhost/leverflag/sdk"
+import "time"
+
+func main() {
+    client := sdk.NewClient(sdk.Options{
+        APIKey:          "your-api-key",
+        WorkspaceSlug:   "your-workspace",
+        ServiceURL:      "http://localhost:8080/api/v1", // Optional: Custom LeverFlag instance
+        RefreshInterval: 30 * time.Second,              // Optional: Background refresh interval
+    })
+    
+    // Wait for the SDK to perform its initial configuration fetch
+    <-client.Ready()
+    
+    // Defer closing the client to release resources when your app exits
+    defer client.Close()
+}
+```
+
+### Local Evaluation Mode (Offline)
+
+If you are writing unit tests or developing locally without a running LeverFlag backend, you can initialize the SDK in Offline Mode. It will bypass all network traffic and can bootstrap from a local JSON file.
+
+```go
+client := sdk.NewClient(sdk.Options{
+    OfflineMode:     true,
+    OfflineFilePath: "flags.json", // Optional: Path to a local configuration file
+})
+
+<-client.Ready() // Will resolve immediately in offline mode
+```
+
+The format of the JSON file should map the flag key to its currently evaluated value, exactly how the SDK expects the `/config` endpoint to respond:
+```json
+{
+  "new-checkout-flow": true,
+  "hero-button-text": "Sign Up Now",
+  "max-login-retries": 5
+}
+```
+
+## Evaluating Flags
+
+The SDK supports several variation types (`Bool`, `String`, `Int`, `Float64`, and `JSON`). 
+
+### Context
+
+Contexts allow you to pass specific attributes about the current user or request that LeverFlag can use to evaluate **targeting rules** or **rollout percentages**.
+
+```go
+// Create a context
+currentContext := sdk.NewContext().
+    WithUserAttribute("userId", "123").
+    WithUserAttribute("email", "alice@example.com")
+```
+
+You can optionally set a default context for the client, which is used if an explicit context isn't passed:
+```go
+client.SetDefaultContext(currentContext)
+```
+
+### Boolean Flags
+
+To quickly check if a boolean feature flag is enabled:
+
+```go
+enabled, err := client.IsFeatureEnabled("new-checkout-flow", currentContext)
+
+if err != nil {
+    // Fallback logic
+}
+
+if enabled {
+    // Show the new flow!
+}
+```
+
+Or using `BoolVariation`:
+
+```go
+isCoolFeatureActive, _ := client.BoolVariation("cool-feature", false, currentContext)
+```
+
+### Other Types
+
+```go
+// String Flag
+buttonText, _ := client.StringVariation("hero-button-text", "Sign Up", currentContext)
+
+// Integer Flag
+maxRetries, _ := client.IntVariation("max-login-retries", 3, currentContext)
+
+// Float Flag
+discountMultiplier, _ := client.Float64Variation("black-friday-discount", 1.0, currentContext)
+
+// JSON Flag
+config, _ := client.JSONVariation("advanced-settings", map[string]interface{}{}, currentContext)
+```
+
+## Analytics and Tracking
+
+LeverFlag supports tracking custom events for A/B testing and performance analysis.
+
+```go
+// Send an event with additional data
+err := client.Track("purchase_completed", map[string]interface{}{
+    "amount":   99.99,
+    "currency": "USD",
+}, currentContext)
+```
+
+## Listening for Changes
+
+You can register a channel to receive notifications when flags are updated in the background.
+
+```go
+listener := make(chan sdk.FlagChangeEvent, 10)
+client.AddFlagChangeListener(listener)
+
+go func() {
+    for event := range listener {
+        fmt.Printf("Flag %s changed from %v to %v\n", event.FlagKey, event.OldValue, event.NewValue)
+    }
+}()
+```

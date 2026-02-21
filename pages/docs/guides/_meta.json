@@ -1,4 +1,6 @@
 {
     "google-sso": "Google SSO",
-    "self-hosting": "Self Hosting"
+    "self-hosting": "Self Hosting",
+    "integrations": "Integrations",
+    "cli": "Command-Line Interface"
 }

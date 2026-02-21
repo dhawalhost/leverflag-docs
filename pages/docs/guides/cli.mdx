@@ -1,0 +1,106 @@
+# LeverFlag CLI
+
+LeverFlag provides a Command-Line Interface (CLI) to easily manage your feature flags directly from the terminal or automate them within your CI/CD pipelines (like GitHub Actions, GitLab CI, etc).
+
+## Installation
+
+You can build the CLI from source using Go from within the `leverflag` repository:
+
+```bash
+cd cli
+go build -o leverflag main.go
+sudo mv leverflag /usr/local/bin/
+```
+
+*(Note: Pre-compiled binaries will be available in future releases.)*
+
+## Authentication & Configuration
+
+The CLI requires two pieces of information to authenticate with your LeverFlag instance:
+1. **API Key**: A valid Personal Access Token or Service Account key.
+2. **Workspace Slug**: The identifier for your workspace (e.g., `my-company`).
+
+### Environment Variables (Recommended for CI/CD)
+
+The most secure and convenient way to configure the CLI, especially in automated environments, is using environment variables:
+
+```bash
+export LEVERFLAG_API_KEY="lf_abc123..."
+export LEVERFLAG_WORKSPACE="my-company"
+# Optional: Set this if you are self-hosting LeverFlag
+export LEVERFLAG_BASE_URL="http://localhost:8080/api" 
+```
+
+### CLI Flags
+
+Alternatively, you can pass these values directly as flags to any command:
+
+```bash
+leverflag flags list --api-key="lf_abc123" --workspace="my-company"
+```
+
+## Commands
+
+### List feature flags
+
+Retrieves and lists all feature flags available in your workspace.
+
+```bash
+leverflag flags list
+```
+
+### Enable a feature flag
+
+Turns a feature flag **ON**. By default, this targets the `production` environment.
+
+```bash
+leverflag flags enable new-checkout-flow
+```
+
+To target a specific environment, use the `-e` or `--env` flag:
+
+```bash
+leverflag flags enable new-checkout-flow --env staging
+```
+
+### Disable a feature flag
+
+Turns a feature flag **OFF**.
+
+```bash
+leverflag flags disable new-checkout-flow --env staging
+```
+
+## Example: GitHub Actions Integration
+
+You can easily trigger flag toggles in your CI/CD workflows after a successful deployment. This is useful for automatically enabling a feature as soon as the code required for it is successfully released.
+
+```yaml
+name: Deploy and Release Features
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Application
+        run: ./deploy.sh
+
+      - name: Setup LeverFlag CLI
+        run: |
+          # Assuming you have published the binary to GitHub Releases
+          wget https://github.com/leverflag/leverflag/releases/latest/download/leverflag-linux-amd64
+          chmod +x leverflag-linux-amd64
+          sudo mv leverflag-linux-amd64 /usr/local/bin/leverflag
+
+      - name: Enable New Feature automatically
+        env:
+          LEVERFLAG_API_KEY: ${{ secrets.LEVERFLAG_API_KEY }}
+          LEVERFLAG_WORKSPACE: "my-company"
+        run: |
+          leverflag flags enable new-feature --env production
+```

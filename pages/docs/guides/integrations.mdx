@@ -1,0 +1,114 @@
+# Integrations
+
+LeverFlag allows you to connect your workspace with external tools to receive notifications when feature flags are created, updated, or deleted. This helps keep your team in sync with changes happening in your feature management workflow.
+
+## Supported Integrations
+
+Currently, LeverFlag supports the following integration types:
+
+- **GitHub**: Sync feature flag changes to GitHub Pull Requests.
+- **Slack**: Send notifications to a specific Slack channel.
+- **Datadog**: Send flag change events to your Datadog event stream.
+- **Segment**: Sync flag events to Segment for downstream analytics.
+- **Vercel**: Sync feature flags to Vercel Edge Config.
+- **Amplitude**: Send exposure events and flag changes to Amplitude.
+- **Generic Webhook**: Send a JSON payload to any HTTP endpoint.
+
+## Setting up an Integration
+
+1.  Navigate to your **Workspace Settings** by clicking the settings icon in the sidebar or clicking on the workspace name.
+2.  Click on the **Integrations** tab.
+3.  Click the **Add Integration** button.
+4.  Select the **Integration Type** (e.g., GitHub, Slack, Datadog).
+
+### GitHub Integration
+
+To connect GitHub:
+1.  Generate a [Personal Access Token (classic)](https://github.com/settings/tokens) in GitHub with the `repo` scope.
+2.  In LeverFlag, select **GitHub** as the type.
+3.  Paste the **Personal Access Token**.
+4.  Enter the **Repository Owner** (e.g., `octocat`).
+5.  Enter the **Repository Name** (e.g., `hello-world`).
+6.  Click **Add Integration**.
+
+### Slack Integration
+
+To connect Slack:
+1.  Create an [Incoming Webhook](https://api.slack.com/messaging/webhooks) in your Slack workspace.
+2.  Copy the Webhook URL (e.g., `https://hooks.slack.com/services/...`).
+3.  In LeverFlag, select **Slack** as the type.
+4.  Paste the **Webhook URL**.
+5.  (Optional) Enter the **Channel** name (e.g. `#alerts`).
+6.  Click **Add Integration**.
+
+### Datadog Integration
+
+To connect Datadog:
+1.  Generate an [API Key](https://app.datadoghq.com/organization-settings/api-keys) in Datadog.
+2.  In LeverFlag, select **Datadog** as the type.
+3.  Paste the **API Key**.
+4.  (Optional) Enter the **Site** (defaults to `datadoghq.com`).
+5.  Click **Add Integration**.
+
+### Segment Integration
+
+To connect Segment:
+1.  Get your Source **Write Key** from Segment.
+2.  In LeverFlag, select **Segment** as the type.
+3.  Paste the **Write Key**.
+4.  Click **Add Integration**.
+
+### Vercel Integration
+
+To connect Vercel:
+1.  Generate a **Personal Access Token** in Vercel.
+2.  In LeverFlag, select **Vercel** as the type.
+3.  Paste the **Access Token**.
+4.  Enter your **Project ID** and **Team ID** (found in Vercel project settings).
+5.  Click **Add Integration**.
+
+### Amplitude Integration
+
+To connect Amplitude:
+1.  Get your Project **API Key** from Amplitude settings.
+2.  In LeverFlag, select **Amplitude** as the type.
+3.  Paste the **API Key**.
+4.  Click **Add Integration**.
+
+### Generic Webhook
+
+To connect a generic webhook:
+1.  In LeverFlag, select **Generic Webhook** as the type.
+2.  Enter the **Webhook URL** of your external service.
+3.  (Optional) Enter a **Secret** if your endpoint requires signature verification.
+4.  Click **Add Integration**.
+
+## Events
+
+Once configured, LeverFlag will send notifications for the following events:
+
+- `flag.create`: When a new feature flag is created.
+- `flag.update`: When a flag's targeting rules or status changes.
+- `flag.delete`: When a flag is deleted.
+
+### Payload Format
+
+The notification payload sent to your webhook will look like this:
+
+```json
+{
+  "event": "flag.update",
+  "workspace": "my-app",
+  "payload": {
+      "key": "new-checkout-flow",
+      "name": "New Checkout Flow",
+      "description": "Gradual rollout of the new checkout page."
+  },
+  "actor": "alice@example.com",
+  "timestamp": 1698400800
+}
+```
+
+## Testing Integrations
+
+You can verify your integration is working correctly by clicking the **Test** button (monitor icon) on the integration card. This will send a test notification to the configured URL or service.

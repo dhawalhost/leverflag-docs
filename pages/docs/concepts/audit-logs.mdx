@@ -1,0 +1,34 @@
+# Audit Logs
+
+Audit Logs provide a comprehensive record of actions performed within your LeverFlag workspace. They are essential for security, compliance, and troubleshooting, allowing you to see exactly who did what and when.
+
+## What is Tracked?
+
+LeverFlag automatically records a wide variety of events, including but not limited to:
+
+*   **Feature Flag Changes**: Creating, updating, or deleting flags, as well as toggling their status (enabled/disabled) and modifying targeting rules.
+*   **Workspace Management**: Creating or updating workspace settings.
+*   **Member Management**: Inviting new users, changing member roles, or removing users from a workspace.
+*   **API Key Management**: Generating or revoking API keys.
+*   **Segment Changes**: Modifications to user segments used for targeting.
+
+## Viewing Audit Logs
+
+To view the Audit Logs for your workspace:
+
+1.  Navigate to your LeverFlag Console.
+2.  In the left-hand sidebar, click on **Audit Logs**.
+3.  You will see a chronological list of events, starting with the most recent.
+
+### Details Available
+
+For each event in the Audit Log, you can view:
+
+*   **Action**: A clear description of what occurred (e.g., "Updated Flag: new-checkout-flow").
+*   **User**: The email address of the team member who performed the action, or "System" if it was an automated process or API key.
+*   **Timestamp**: The exact date and time the action took place.
+*   **Resource Type & ID**: The specific entity that was affected (e.g., a Flag ID, Workspace ID, or User ID).
+
+## Security and Compliance
+
+Audit Logs are immutable and provide a trusted trail of all configuration changes within your environments. This is particularly crucial for teams that require strict access controls or need to adhere to compliance standards (like SOC2) by maintaining a verifiable history of system modifications.

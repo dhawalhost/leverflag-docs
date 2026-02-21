@@ -1,0 +1,34 @@
+# Scheduled Rollouts
+
+LeverFlag's Scheduled Rollouts feature allows you to plan and automate feature flag changes ahead of time. Instead of manually toggling a flag or updating targeting rules at the exact moment a feature needs to launch, you can schedule these actions to occur automatically at a specific date and time.
+
+## Use Cases
+
+Scheduled Rollouts are incredibly useful for tasks that require precise timing:
+
+*   **Marketing Campaigns**: Launch a new promotional feature or discount banner exactly at midnight on a specific date, without requiring an engineer to be online.
+*   **Maintenance Windows**: Seamlessly route traffic away from a specific service or database at the beginning of a planned maintenance window, and automatically route it back when the window concludes.
+*   **Phased Rollouts**: Schedule incremental increases in a flag's rollout percentage over time (e.g., 10% on Monday, 50% on Wednesday, 100% on Friday).
+*   **Event-Driven Features**: Enable a specific feature only during a live event (like a webinar or sports game) and automatically disable it when the event ends.
+
+## Creating a Scheduled Rollout
+
+To schedule a change for a feature flag:
+
+1.  Navigate to the **Feature Flags** section in the LeverFlag Console.
+2.  Select the specific flag you wish to modify.
+3.  Go to the **Schedules** tab for that flag.
+4.  Click **Create Schedule**.
+5.  **Define the Action**: Choose what should happen when the schedule executes. This could be toggling the flag on/off, updating default rules, or modifying specific targeting segments.
+6.  **Set the Time**: Select the exact Date, Time, and Timezone for the action to occur.
+7.  **Review and Save**: Confirm the details and save the schedule.
+
+## Managing Schedules
+
+Once a schedule is created, it will appear in the "Pending Schedules" list for that flag. You can:
+
+*   **Edit**: Modify the scheduled action or the time of execution before it runs.
+*   **Delete**: Cancel the scheduled rollout entirely if it is no longer needed.
+*   **View History**: See a log of previously executed schedules for auditing purposes.
+
+*Note: Scheduled Rollouts rely on LeverFlag's internal cron and job processor. Please ensure the scheduler service is running if you are self-hosting LeverFlag.*

@@ -1,0 +1,50 @@
+# AI Assistant
+
+The LeverFlag AI Assistant — **Lev** — is an intelligent, context-aware copilot built directly into the LeverFlag Console. It has deep knowledge of the entire platform and can help you manage feature flags, plan rollouts, and troubleshoot issues.
+
+## What Lev Knows
+
+Lev is trained on the full LeverFlag platform and understands:
+
+*   **Feature Flags**: Types (boolean, string, number, JSON), default values, rollout percentages, multivariate variations, and flag ownership.
+*   **Targeting Rules**: Attribute-based conditions (`equals`, `contains`, `in`, `gt`, `lt`), user and group targeting, and percentage-based rollouts within a rule.
+*   **Environments**: Environment scoping (dev, staging, production), protected environments, and the change request approval workflow.
+*   **Scheduled Rollouts**: Scheduling future flag changes (enable, disable, or update rollout percentage) with time-based automation.
+*   **A/B Experiments**: Setting up experiments with control/treatment variations and tracking metrics.
+*   **Workflows & Change Requests**: Approval flows for protected environments like production.
+*   **Data Exports**: Exporting evaluation logs (JSONL) to Amazon S3.
+*   **Audit Logs**: Immutable records of all workspace actions for compliance and debugging.
+*   **SDKs**: Code generation for Go, JavaScript/TypeScript, and Python SDKs.
+*   **API Keys & Integrations**: Managing API keys and configuring integrations (GitHub, Slack, Datadog, Segment, Vercel, Amplitude, Webhooks).
+
+## Capabilities
+
+You can ask Lev to:
+
+*   **Generate Code Snippets**: "Show me how to check the `new-checkout` flag in Python" — Lev will output the correct SDK code.
+*   **Design Targeting Strategies**: "How should I target only internal users for this flag?" — Lev will suggest valid targeting rule JSON.
+*   **Plan Rollout Strategies**: "What's the best way to roll out a new payment flow to production?" — Lev will recommend environment progression (dev → staging → prod) with scheduled rollouts.
+*   **Explain Configurations**: "Why did user `john@example.com` evaluate to true for `beta-feature`?" — Lev will walk through the targeting logic.
+*   **Answer Platform Questions**: Any question about LeverFlag concepts, features, or best practices.
+
+## AI Playbooks
+
+**AI Playbooks** generate complete rollout strategies as structured JSON. Describe what you want to launch, and Lev will produce a plan including:
+
+*   A flag name, type, and environment
+*   Multivariate variations (if applicable)
+*   Phased rollout steps with percentages
+*   Targeting rules to limit blast radius
+*   Scheduled rollout timelines for automated progression
+*   Flag dependencies (prerequisites that must be enabled first)
+*   A reasoning section explaining the strategy
+
+### Example Use Cases
+
+*   **Phased Product Launch**: "Roll out a new checkout flow to internal users first, then 10% of beta users, then everyone."
+*   **Marketing Campaign**: "Enable a promo banner at midnight on March 1st and disable it after 7 days."
+*   **Stale Flag Cleanup**: "Identify flags that haven't been evaluated in 30 days and suggest archiving them."
+
+## Interacting with Lev
+
+Click the **✨ sparkle button** in the bottom-right corner of the LeverFlag Console to open the Lev chat panel. You can also access AI Playbooks from the feature flags dashboard. Engage in natural conversation — Lev responds in markdown with formatted code blocks, JSON examples, and step-by-step guidance.

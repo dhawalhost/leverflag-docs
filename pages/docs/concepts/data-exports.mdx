@@ -1,0 +1,31 @@
+# Data Exports
+
+You can stream your raw feature evaluation logs and metric events from LeverFlag into your preferred data warehouse for advanced tracking and correlation.
+
+## Supported Destinations
+
+* **Amazon S3**: Export raw JSONL blobs of `FeatureFlagEvent` logs directly to an S3 bucket.
+* **Snowflake**: *(Coming Soon)*
+* **Google BigQuery**: *(Coming Soon)*
+
+## Configuring an Export
+
+Navigate to the **Data Exports** page in the LeverFlag Console Sidebar.
+
+1. Click **New Export**.
+2. Select your target **Destination** (e.g., Amazon S3).
+3. Provide the **Storage Location** path (e.g., `s3://my-org-analytics-bucket/leverflag/`).
+4. Select the **Time Range** (Start Date and End Date) you wish to retroactively dump data for.
+5. Hit **Start Export**.
+
+## Export Mechanics
+
+LeverFlag creates an asynchronous background job for each request. 
+The system queries the underlying database in batches, streaming the log events into JSONL (JSON Lines) format to minimize memory footprint. Those blobs are then pushed to the selected destination.
+
+You can monitor the status on the Data Exports dashboard, tracking:
+- `Processing` Statuses
+- Number of Rows Extracted
+- Total File Size generated
+
+*Note: You must configure the environment with sufficient AWS credentials if running the core open-source engine yourself.*
