@@ -1,5 +1,6 @@
 {
     "javascript": "JavaScript / TypeScript",
     "python": "Python",
-    "go": "Go"
+    "go": "Go",
+    "mcp-server": "MCP Server"
 }

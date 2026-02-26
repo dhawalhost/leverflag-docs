@@ -1,0 +1,122 @@
+# MCP Server
+
+LeverFlag ships a standalone **MCP (Model Context Protocol) server** that lets AI agents—Claude Desktop, Cursor, VS Code Copilot, and others—evaluate feature flags, list flags, and toggle flags through the standard MCP protocol.
+
+## How It Works
+
+The MCP server is a standalone Go binary that communicates over **stdio** (standard input/output). It connects to the same database as the main LeverFlag API and authenticates using your existing LeverFlag API key.
+
+```
+┌─────────────────┐   stdio    ┌──────────────────┐        ┌─────────────┐
+│   AI Agent      │ ◄────────► │  leverflag-mcp   │ ◄────► │  Database   │
+│ (Claude, Cursor) │            │  (MCP Server)    │        │ (Postgres)  │
+└─────────────────┘            └──────────────────┘        └─────────────┘
+```
+
+## Prerequisites
+
+- A running LeverFlag instance with a configured database
+- A **LeverFlag API key** (created in the Console → API Keys)
+- Go 1.24+ (only needed to build from source)
+
+## Installation
+
+### Build from source
+
+```bash
+cd leverflag
+go build -o leverflag-mcp ./cmd/mcp
+```
+
+The resulting `leverflag-mcp` binary can be placed anywhere on your `PATH`.
+
+## Available Tools
+
+| Tool | Description | Key Parameters |
+|------|-------------|---------------|
+| `evaluate_flag` | Evaluate a single feature flag for a user context | `flag_name` (required), `environment`, `user_id`, `email`, `attributes` |
+| `list_flags` | List all feature flags in the workspace | `environment`, `enabled_only` |
+| `get_flag` | Get detailed info about a specific flag | `flag_name` (required), `environment` |
+| `toggle_flag` | Enable or disable a feature flag | `flag_name` (required), `enabled` (required), `environment` |
+| `evaluate_all_flags` | Evaluate all enabled flags for a user context | `environment`, `user_id`, `email`, `attributes` |
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `LEVERFLAG_API_KEY` | ✅ | Your LeverFlag API key |
+| `LEVERFLAG_WORKSPACE` | ✅ | The workspace slug to operate on |
+| `APP_ENV` | No | Config file selector (e.g. `docker` loads `config.docker.yaml`) |
+
+### Claude Desktop
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "leverflag": {
+      "command": "/path/to/leverflag-mcp",
+      "env": {
+        "LEVERFLAG_API_KEY": "your-api-key-here",
+        "LEVERFLAG_WORKSPACE": "your-workspace-slug"
+      }
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to your Cursor MCP settings (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "leverflag": {
+      "command": "/path/to/leverflag-mcp",
+      "env": {
+        "LEVERFLAG_API_KEY": "your-api-key-here",
+        "LEVERFLAG_WORKSPACE": "your-workspace-slug"
+      }
+    }
+  }
+}
+```
+
+### VS Code (GitHub Copilot)
+
+Add to your `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "leverflag": {
+      "type": "stdio",
+      "command": "/path/to/leverflag-mcp",
+      "env": {
+        "LEVERFLAG_API_KEY": "your-api-key-here",
+        "LEVERFLAG_WORKSPACE": "your-workspace-slug"
+      }
+    }
+  }
+}
+```
+
+## Example Usage
+
+Once connected, your AI agent can interact with LeverFlag feature flags naturally:
+
+> **You:** Is the dark-mode feature flag enabled?
+>
+> **Agent:** *(calls `evaluate_flag` with `flag_name: "dark-mode"`)* Yes, the `dark-mode` flag is enabled and currently evaluates to `true` in the `dev` environment.
+
+> **You:** List all feature flags in production
+>
+> **Agent:** *(calls `list_flags` with `environment: "production"`)* Here are your production flags: ...
+
+> **You:** Disable the new-checkout flag in staging
+>
+> **Agent:** *(calls `toggle_flag` with `flag_name: "new-checkout", enabled: false, environment: "staging"`)* Done! The `new-checkout` flag has been disabled in staging.
