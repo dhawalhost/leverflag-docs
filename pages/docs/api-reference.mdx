@@ -50,3 +50,24 @@ X-API-Key: <your-api-key>
 - `POST /workspaces/:slug/workflows`: Create request.
 - `POST /workspaces/:slug/workflows/:id/review`: Approve/Reject.
 - `POST /workspaces/:slug/workflows/:id/apply`: Apply changes.
+
+### Analytics
+
+- `GET /analytics/evaluations`: Daily evaluation trend.
+- `GET /analytics/flags`: Per-flag evaluation breakdown.
+- `GET /analytics/variations`: Variation distribution per flag.
+- `GET /analytics/unique-users`: Unique user trend and total count.
+- `GET /analytics/reasons`: Evaluation reason distribution.
+- `GET /analytics/stale-flags`: Enabled flags with no recent evaluations.
+- `GET /analytics/heatmap`: Hour × day-of-week evaluation counts.
+- `GET /analytics/environments`: Per-environment evaluation counts.
+
+### AI
+
+- `POST /ai/chat`: Chat with Lev, the AI assistant.
+- `POST /ai/playbook`: Generate a rollout playbook.
+- `GET /ai/usage-analysis`: AI-powered usage analysis and plan recommendation.
+- `GET /ai/analytics-insights`: AI-generated analytics insights from full data digest.
+- `GET /ai/anomalies`: Anomaly detection with AI explanations.
+- `GET /ai/flag-recommendations`: Per-flag AI lifecycle recommendations.
+- `GET /ai/forecast`: Evaluation growth forecast and capacity planning.

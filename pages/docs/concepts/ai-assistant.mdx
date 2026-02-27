@@ -45,6 +45,52 @@ You can ask Lev to:
 *   **Marketing Campaign**: "Enable a promo banner at midnight on March 1st and disable it after 7 days."
 *   **Stale Flag Cleanup**: "Identify flags that haven't been evaluated in 30 days and suggest archiving them."
 
+## AI Analytics Intelligence
+
+Beyond chat and playbooks, Lev powers four analytics intelligence features accessible from the **Analytics** page and API:
+
+### Analytics Insights
+
+Click the **✨ Ask Lev** button on the Analytics page to get a narrative analysis of your evaluation data. Lev receives the full analytics digest — daily trends, top flags, variation splits, evaluation reasons, and stale flags — and returns:
+
+- **Summary**: Executive overview of analytics health
+- **Insights**: Specific observations referencing flag names and numbers
+- **Warnings**: Potential issues (sudden drops, concentration risk)
+- **Recommendations**: Actionable next steps
+- **Health Score**: 0–100 overall analytics health
+
+### Anomaly Detection
+
+Lev automatically detects evaluation spikes (>100%) and drops (>70%) compared to each flag's rolling average. For each anomaly, Lev explains what happened and suggests an action:
+
+> 🔴 *"Flag `checkout-v2` evaluations spiked 340% on Feb 25 — this coincides with a new SDK deployment. Verify intended behavior."*
+
+### Smart Flag Recommendations
+
+Lev analyzes each flag's lifecycle data (age, eval count, variation distribution, targeting rules) and recommends actions:
+
+- **Archive**: Disabled flags with no recent evaluations
+- **Make permanent**: Flags where one variation serves >95% of traffic
+- **Investigate**: Enabled flags with zero evaluations
+- **Add targeting**: Flags in production without targeting rules
+
+### Evaluation Forecast
+
+Lev projects your evaluation growth based on historical trends and warns about plan capacity:
+
+> *"At current growth rate (12% week-over-week), you'll exceed the Pro plan's 100K evals/month limit in ~6 weeks."*
+
+### AI Analytics API Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/ai/analytics-insights` | Full analytics digest → narrative insights |
+| `GET` | `/ai/anomalies` | Spike/drop detection + explanations |
+| `GET` | `/ai/flag-recommendations` | Per-flag lifecycle suggestions |
+| `GET` | `/ai/forecast` | Growth projection + plan warnings |
+
+All AI analytics endpoints accept `workspace` (required), `days`, and `environment` query parameters.
+
 ## Interacting with Lev
 
 Click the **✨ sparkle button** in the bottom-right corner of the LeverFlag Console to open the Lev chat panel. You can also access AI Playbooks from the feature flags dashboard. Engage in natural conversation — Lev responds in markdown with formatted code blocks, JSON examples, and step-by-step guidance.

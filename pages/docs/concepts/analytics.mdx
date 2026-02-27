@@ -1,0 +1,105 @@
+# Usage Analytics
+
+LeverFlag provides comprehensive analytics to help you understand how your feature flags are being used across environments and users.
+
+## Overview
+
+Navigate to **Analytics** in the Console sidebar to access the full analytics dashboard. The page includes real-time KPI cards, interactive charts, and AI-powered insights.
+
+## KPI Summary Cards
+
+At the top of the dashboard, four key metrics give you an at-a-glance view:
+
+| Card | Description |
+|------|-------------|
+| **Total Evaluations** | Sum of all flag evaluations for the selected period |
+| **Unique Users** | Distinct user IDs that received flag evaluations |
+| **Daily Average** | Average evaluations per day |
+| **Peak Day** | The day with the highest evaluation volume |
+
+## Evaluation Trend
+
+A dual-axis area chart shows:
+- **Evaluations** (left axis) — daily evaluation count as a filled area
+- **Unique Users** (right axis) — daily distinct user count as a dashed overlay
+
+Use this to correlate evaluation spikes with user growth or deployment events.
+
+## Evaluation Reasons
+
+A donut chart breaking down **why** evaluations returned the values they did:
+
+- `targeting-match` — A targeting rule matched the user's context
+- `rollout` — The user fell within the rollout percentage
+- `default` — No rules matched; the default value was served
+- `disabled` — The flag was disabled
+- `error` — An error occurred during evaluation
+
+This helps identify whether your targeting rules are working as expected.
+
+## Environment Comparison
+
+A bar chart comparing evaluation volumes across environments (e.g., `production`, `staging`, `dev`). Useful for verifying that flags are being tested in staging before reaching production.
+
+## Hourly Activity Heatmap
+
+A 7×24 grid (days of week × hours) showing when evaluations happen. Darker cells indicate higher activity. Hover over any cell to see the exact count.
+
+Use this to identify:
+- Peak usage hours
+- Off-hours activity that might indicate automated processes
+- Unexpected patterns (e.g., zero activity during business hours)
+
+## Flag Adoption
+
+A horizontal bar chart ranking flags by evaluation count. Quickly see which flags are most heavily used, and which might be candidates for cleanup.
+
+## Stale Flag Detection
+
+When enabled flags have no recent evaluations, a **Stale Flags** alert table appears. Each row shows:
+
+| Column | Description |
+|--------|-------------|
+| **Flag** | Flag name |
+| **Environment** | Which environment the flag is in |
+| **Evals** | Evaluation count in the period (typically 0) |
+| **Days since last eval** | How long since the last evaluation |
+
+> **Tip**: Flags shown here are enabled but unused — consider archiving them to reduce clutter and eliminate technical debt.
+
+## Variation Distribution
+
+Per-flag donut charts showing how traffic is split across variations. If one variation is serving 95%+ of traffic, the flag may be ready to be made permanent.
+
+## Filters
+
+All charts respect two global filters:
+- **Period**: Last 7, 14, 30, or 90 days
+- **Environment**: Filter by a specific environment (e.g., `production`)
+
+## AI Analytics Insights
+
+Click the **✨ Ask Lev** button in the top-right corner to get AI-generated analytics insights. Lev analyzes the full analytics digest — trends, top flags, variation splits, evaluation reasons, and stale flags — and returns:
+
+- **Summary**: An executive overview of your analytics health
+- **Insights**: Specific observations referencing flag names and numbers
+- **Warnings**: Potential issues like sudden drops or over-reliance on single flags
+- **Recommendations**: Actionable next steps (e.g., "Archive flag X", "Investigate the 40% drop on Feb 25")
+- **Health Score**: An overall 0–100 analytics health score
+
+For more on Lev's AI capabilities, see [AI Assistant](/docs/concepts/ai-assistant).
+
+## API Endpoints
+
+All analytics endpoints require JWT authentication and accept `days` and `environment` query parameters.
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/analytics/evaluations` | Daily evaluation trend |
+| `GET` | `/analytics/flags` | Per-flag evaluation breakdown |
+| `GET` | `/analytics/variations` | Variation distribution per flag |
+| `GET` | `/analytics/unique-users` | Unique user trend + total |
+| `GET` | `/analytics/reasons` | Evaluation reason distribution |
+| `GET` | `/analytics/stale-flags` | Enabled flags with no recent evals |
+| `GET` | `/analytics/heatmap` | Hour × day-of-week evaluation counts |
+| `GET` | `/analytics/environments` | Per-environment evaluation counts |

@@ -3,6 +3,7 @@
     "feature-flags": "Feature Flags",
     "experiments": "A/B Experiments",
     "workflows": "Automated Workflows",
+    "analytics": "Usage Analytics",
     "data-exports": "Data Exports",
     "audit-logs": "Audit Logs",
     "ai-assistant": "AI Assistant",
