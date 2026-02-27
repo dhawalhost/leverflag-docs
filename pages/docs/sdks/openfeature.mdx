@@ -1,0 +1,204 @@
+# OpenFeature Providers
+
+LeverFlag provides official [OpenFeature](https://openfeature.dev) providers for **Go**, **Python**, and **JavaScript/TypeScript**, allowing you to use the standard OpenFeature SDK to evaluate feature flags served by LeverFlag.
+
+## Source Code
+The provider sources are maintained in the `leverflag` repository:
+- **Go**: [`openfeature/`](https://github.com/dhawalhost/leverflag/tree/main/openfeature)
+- **Python**: [`sdk/openfeature/python/`](https://github.com/dhawalhost/leverflag/tree/main/sdk/openfeature/python)
+- **JavaScript**: [`sdk/openfeature/js/`](https://github.com/dhawalhost/leverflag/tree/main/sdk/openfeature/js)
+
+---
+
+## Go
+
+### Installation
+
+```bash
+go get github.com/dhawalhost/leverflag/openfeature
+go get github.com/open-feature/go-sdk/openfeature
+```
+
+### Setup
+
+```go
+import (
+    leverflag "github.com/dhawalhost/leverflag/openfeature"
+    of "github.com/open-feature/go-sdk/openfeature"
+    "github.com/dhawalhost/leverflag/services"
+    "github.com/dhawalhost/leverflag/database"
+)
+
+func main() {
+    flagRepo := database.NewFeatureFlagRepository(db)
+    envRepo := database.NewEnvironmentRepository(db)
+    evaluator := services.NewFlagEvaluator(db, flagRepo, envRepo)
+
+    provider := leverflag.NewLeverFlagProvider(evaluator, workspaceID, environmentID, "production")
+    of.SetProvider(provider)
+}
+```
+
+### Evaluating Flags
+
+```go
+client := of.NewClient("my-app")
+
+enabled := client.Boolean(ctx, "dark-mode", false, of.EvaluationContext{})
+buttonText := client.String(ctx, "hero-button-text", "Sign Up", of.EvaluationContext{})
+maxRetries := client.Int(ctx, "max-login-retries", int64(3), of.EvaluationContext{})
+discount := client.Float(ctx, "discount-rate", 0.1, of.EvaluationContext{})
+```
+
+### Evaluation Context
+
+```go
+evalCtx := of.NewEvaluationContext(
+    "user-123",
+    map[string]any{
+        "email":  "alice@example.com",
+        "plan":   "pro",
+        "groups": []string{"beta-testers"},
+    },
+)
+
+enabled := client.Boolean(ctx, "new-feature", false, evalCtx)
+```
+
+---
+
+## Python
+
+### Installation
+
+```bash
+pip install leverflag-openfeature
+```
+
+Or install from source:
+
+```bash
+cd sdk/openfeature/python
+pip install .
+```
+
+### Setup
+
+```python
+from openfeature import api
+from leverflag_openfeature import LeverFlagProvider
+
+provider = LeverFlagProvider(
+    api_key="YOUR_API_KEY",
+    workspace_slug="your-workspace",
+    api_url="https://your-leverflag.com/api/v1",
+)
+api.set_provider(provider)
+```
+
+### Evaluating Flags
+
+```python
+client = api.get_client()
+
+enabled = client.get_boolean_value("dark-mode", False)
+text = client.get_string_value("hero-button-text", "Sign Up")
+retries = client.get_integer_value("max-retries", 3)
+discount = client.get_float_value("discount-rate", 0.1)
+config = client.get_object_value("advanced-config", {})
+```
+
+### Evaluation Context
+
+```python
+from openfeature.evaluation_context import EvaluationContext
+
+context = EvaluationContext(
+    targeting_key="user-123",
+    attributes={
+        "email": "alice@example.com",
+        "plan": "pro",
+    },
+)
+
+enabled = client.get_boolean_value("new-feature", False, context)
+```
+
+---
+
+## JavaScript / TypeScript
+
+### Installation
+
+```bash
+npm install @leverflag/openfeature-js @openfeature/server-sdk
+```
+
+Or install from source:
+
+```bash
+cd sdk/openfeature/js
+npm install && npm run build
+```
+
+### Setup
+
+```typescript
+import { OpenFeature } from "@openfeature/server-sdk";
+import { LeverFlagProvider } from "@leverflag/openfeature-js";
+
+const provider = new LeverFlagProvider({
+  apiKey: "YOUR_API_KEY",
+  workspaceSlug: "your-workspace",
+  serviceURL: "https://your-leverflag.com/api/v1",
+});
+
+await OpenFeature.setProviderAndWait(provider);
+```
+
+### Evaluating Flags
+
+```typescript
+const client = OpenFeature.getClient();
+
+const enabled = await client.getBooleanValue("dark-mode", false);
+const text = await client.getStringValue("hero-button-text", "Sign Up");
+const retries = await client.getNumberValue("max-retries", 3);
+const config = await client.getObjectValue("advanced-config", {});
+```
+
+### Evaluation Context
+
+```typescript
+const context = {
+  targetingKey: "user-123",
+  email: "alice@example.com",
+  plan: "pro",
+};
+
+const enabled = await client.getBooleanValue("new-feature", false, context);
+```
+
+---
+
+## Context Mapping
+
+All providers map OpenFeature context fields to LeverFlag's evaluation context:
+
+| OpenFeature Field | LeverFlag Field | Description |
+|-------------------|-----------------|-------------|
+| `targetingKey` | `userId` | Primary user identifier |
+| `email` | `email` | User email for targeting |
+| `groups` | `groups` | Group-based targeting |
+| `environment` | `environment` | Override the evaluation environment |
+| All other keys | User attributes | Available for attribute-based targeting rules |
+
+## Error Handling
+
+All providers use standard OpenFeature error codes:
+
+| Error Code | When |
+|------------|------|
+| `FLAG_NOT_FOUND` | The flag key doesn't exist in the workspace/environment |
+| `TYPE_MISMATCH` | The flag value can't be coerced to the requested type |
+| `GENERAL` | Any other evaluation error |

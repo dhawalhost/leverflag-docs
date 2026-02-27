@@ -2,5 +2,6 @@
     "javascript": "JavaScript / TypeScript",
     "python": "Python",
     "go": "Go",
+    "openfeature": "OpenFeature Provider",
     "mcp-server": "MCP Server"
 }
